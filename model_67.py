@@ -17,16 +17,16 @@ t1 = 120
 tspan = (0, 120)
 
 # Coeffiecients
-B = 0.3
+B = 0.6
 ALFA = 0.4 
-MU = 0.01  
+MU = 0.03  
 GAMMA = 1/7 
-VAC1 = 8.8
-VAC2 = 2.45
-VAC2_R = 0.05
-SIGMA1 = 0.98 
-SIGMA2 = 0.95
-THETA = 0.2 
+VAC1 = 4
+VAC2 = 0.04
+VAC2_R = 0.01
+SIGMA1 = 1 
+SIGMA2 = 1.3
+THETA = 1 # Relic not used
 OMEGA1 = 0.03
 OMEGA2 = 0.01
 
@@ -87,7 +87,7 @@ def propp(X, coeff):
                   VAC1 * S/(S + R),
                   VAC1 * R/(S + R),
                   SIGMA1,
-                  (VAC1/5) * THETA,
+                  V1 * VAC2,
                   SIGMA2,
                   OMEGA1 * (I/N)*V1,
                   OMEGA2 * (I/N) * V2,
