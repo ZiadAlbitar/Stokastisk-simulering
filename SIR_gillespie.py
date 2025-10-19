@@ -16,6 +16,8 @@ def prop(X, coeff):
     prop1 = coeff[1] * X[1] #
     return np.array([prop0, prop1])
 
+# reaktion 1: En mottaglig blir sjuk
+# reaktion 2: En mottaglig blir resistant
 def stoch():
     return np.array([[-1, 1, 0],
                      [0, -1, 1]])
@@ -24,6 +26,11 @@ def stoch():
 coeff = (beta, gamma)
 
 t, X = SSA(prop, stoch, X0, tspan, coeff)
+t, X = SSA(prop, stoch, X0, tspan, coeff)
+t, X = SSA(prop, stoch, X0, tspan, coeff)
+t, X = SSA(prop, stoch, X0, tspan, coeff)
+t, X = SSA(prop, stoch, X0, tspan, coeff)
+
 
 plt.plot(t, X[:,0], label="S")
 plt.plot(t, X[:,1], label="I")

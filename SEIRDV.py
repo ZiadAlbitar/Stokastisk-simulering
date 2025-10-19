@@ -35,7 +35,7 @@ def stochSEIR():
 # reaktion 2: en exponerad blir smittande alpha*E
 # reaktion 3: en smittad blir resistant gamma*I
 # reaktion 4: en smittad dör :( mu*I
-# reaktion 5: en orörd person blir vaccinerad
+# reaktion 5: en motagglig person blir vaccinerad I
 def propSEIR(X, coeff):
     beta=coeff[0]
     alpha=coeff[1]

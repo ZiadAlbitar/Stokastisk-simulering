@@ -1,7 +1,7 @@
 from gillespie import SSA
 import numpy as np
 import matplotlib.pyplot as plt
-B = 0.3
+B = 0.2
 gamma = 1/7
 alfa = 0.4 # DET HÄR VI SKA SKOLLA
 N = 1000.0
@@ -39,14 +39,20 @@ def propSEIR(X, coeff):
 X0 = (S0, E0, I0, R0)
 coeff= (B, alfa, gamma)
 
+tests = 4
 
-t,X = SSA(propSEIR, stochSEIR, X0, tspan, coeff)
+plt.figure(figsize=(tests*5, 5))
+for i in range(tests):
+    t, X = SSA(propSEIR, stochSEIR, X0, tspan, coeff)
+    a = plt.subplot(1, tests, i + 1)
+    plt.plot(t, X[:,0], label="S")
+    plt.plot(t, X[:,1], label="E")
+    plt.plot(t, X[:,2], label="I")
+    plt.plot(t, X[:,3], label="R")
+    plt.grid()  
+    plt.legend()    
 
-plt.plot(t,X[:,0], label="S")
-plt.plot(t,X[:,1], label="E")
-plt.plot(t,X[:,2], label="I")
-plt.plot(t,X[:,3], label="R")
-plt.legend()
+
 plt.show()
 
 

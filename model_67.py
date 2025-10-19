@@ -17,7 +17,7 @@ t1 = 120
 tspan = (0, 120)
 
 # Coeffiecients
-B = 0.6
+B = 0.6 
 ALFA = 0.4 
 MU = 0.03  
 GAMMA = 1/7 
@@ -26,7 +26,6 @@ VAC2 = 0.04
 VAC2_R = 0.01
 SIGMA1 = 1 
 SIGMA2 = 1.3
-THETA = 1 # Relic not used
 OMEGA1 = 0.03
 OMEGA2 = 0.01
 
@@ -42,10 +41,10 @@ def stoch():
                      [0,0,0,0,-1,1,0,0], #R -> V1
                      [0,0,0,0,0,-1,0,1], #V1 -> IM
                      [0,0,0,0,0,-1,1,0], #V1 -> V2
-                     [0,0,0,0,0,0,-1,1],  #V2 -> IM
+                     [0,0,0,0,0,0,-1,1], #V2 -> IM
                      [0,1,0,0,0,-1,0,0], #V1 -> E
                      [0,1,0,0,0,0,-1,0], #V2 -> E
-                     [0,0,0,0,-1,0,1,0] #R -> V2
+                     [0,0,0,0,-1,0,1,0]  #R -> V2
                      ]) 
 
 def propp(X, coeff):
@@ -71,6 +70,7 @@ def propp(X, coeff):
     V2 = X[6]
     IM = X[7]
 
+    # Make sure nothings becomes negative
     if (R == 0):
         VAC2_R = 0
 
@@ -80,24 +80,23 @@ def propp(X, coeff):
     if (V2 == 0):
         SIGMA2 = 0
     
-    w = np.array([B * (I/N) * S,
-                  ALFA * E,
-                  MU * I,
-                  GAMMA * I,
-                  VAC1 * S/(S + R),
-                  VAC1 * R/(S + R),
-                  SIGMA1,
-                  V1 * VAC2,
-                  SIGMA2,
-                  OMEGA1 * (I/N)*V1,
-                  OMEGA2 * (I/N) * V2,
-                  VAC2_R])
+    w = np.array([B * (I/N) * S,             #S -> E   
+                  ALFA * E,                  #E -> I
+                  MU * I,                    #I -> D
+                  GAMMA * I,                 #I -> R
+                  VAC1 * S/(S + R),          #S -> V1
+                  VAC1 * R/(S + R),          #R -> V1
+                  SIGMA1,                    #V1 -> IM
+                  V1 * VAC2,                 #V1 -> V2
+                  SIGMA2,                    #V2 -> IM
+                  OMEGA1 * (I/N)*V1,         #V1 -> E
+                  OMEGA2 * (I/N) * V2,       #V2 -> E
+                  VAC2_R])                   #R -> V2
     return w
 
 
 X0 = (S0, E0, I0, D0, R0, V1_0, V2_0, IM0)
 coeff = (B, ALFA, MU, GAMMA, VAC1, VAC2, VAC2_R, SIGMA1, SIGMA2, THETA, OMEGA1, OMEGA2) 
-
 t, X = SSA(propp, stoch, X0, tspan, coeff) 
 
 plt.plot(t, X[:,0], label="S")

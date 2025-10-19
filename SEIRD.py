@@ -16,9 +16,10 @@ t0 = 0
 t1 = 120
 tspan = (t0, t1)
 
-# reaktion 1: en blir smittad och blir inkubation [-1, 1, 0, 0]
-# reaktion 2: en exponerad blir smittande [0, -1, 1, 0, 0]
-# reaktion 3: en smittad blir resistant [0, 0, -1, 1]
+# reaktion 1: en blir smittad och blir inkubation [-1, 1, 0, 0, 0]
+# reaktion 2: en exponerad blir smittande         [0, -1, 1, 0, 0]
+# reaktion 3: en smittad blir resistant           [0, 0, -1, 1, 0]
+# reaktion 4: en smittad dör                      [0, 0, -1, 0, 1]
 def stochSEIR():
     M = np.array([[-1, 1, 0, 0, 0],
                   [0, -1, 1, 0, 0], 
