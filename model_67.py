@@ -11,40 +11,41 @@ R0 = 0
 V1_0 = 0
 V2_0 = 0
 IM0 = 0
+C0 = I0 # Cases, to count total infected
 
 t0 = 0
 t1 = 120
 tspan = (0, 120)
 
 # Coeffiecients
-B = 0.6 
-ALFA = 0.4 
-MU = 0.03  
+B = 0.3 
+ALFA = 0.3 
+MU = 0.01  
 GAMMA = 1/7 
-VAC1 = 4
-VAC2 = 0.04
-VAC2_R = 0.01
+VAC1 = 4 * 2
+VAC2 = 0.04 * 2
+VAC2_R = 0.01 * 2
 SIGMA1 = 1 
 SIGMA2 = 1.3
 OMEGA1 = 0.03
 OMEGA2 = 0.01
 
 
-X0 = [S0, E0, I0, D0, R0, V1_0, V2_0, IM0]
+X0 = [S0, E0, I0, D0, R0, V1_0, V2_0, IM0, C0]
 
 def stoch():
-    return np.array([[-1,1,0,0,0,0,0,0], #S -> E
-                     [0,-1,1,0,0,0,0,0], #E -> I
-                     [0,0,-1,1,0,0,0,0], #I -> D
-                     [0,0,-1,0,1,0,0,0], #I -> R
-                     [-1,0,0,0,0,1,0,0], #S -> V1
-                     [0,0,0,0,-1,1,0,0], #R -> V1
-                     [0,0,0,0,0,-1,0,1], #V1 -> IM
-                     [0,0,0,0,0,-1,1,0], #V1 -> V2
-                     [0,0,0,0,0,0,-1,1], #V2 -> IM
-                     [0,1,0,0,0,-1,0,0], #V1 -> E
-                     [0,1,0,0,0,0,-1,0], #V2 -> E
-                     [0,0,0,0,-1,0,1,0]  #R -> V2
+    return np.array([[-1,1,0,0,0,0,0,0,0], #S -> E
+                     [0,-1,1,0,0,0,0,0,1], #E -> I
+                     [0,0,-1,1,0,0,0,0,0], #I -> D
+                     [0,0,-1,0,1,0,0,0,0], #I -> R
+                     [-1,0,0,0,0,1,0,0,0], #S -> V1
+                     [0,0,0,0,-1,1,0,0,0], #R -> V1
+                     [0,0,0,0,0,-1,0,1,0], #V1 -> IM
+                     [0,0,0,0,0,-1,1,0,0], #V1 -> V2
+                     [0,0,0,0,0,0,-1,1,0], #V2 -> IM
+                     [0,1,0,0,0,-1,0,0,0], #V1 -> E
+                     [0,1,0,0,0,0,-1,0,0], #V2 -> E
+                     [0,0,0,0,-1,0,1,0,0]  #R -> V2
                      ]) 
 
 def propp(X, coeff):
@@ -57,9 +58,8 @@ def propp(X, coeff):
     VAC2_R = coeff[6]
     SIGMA1 = coeff[7]
     SIGMA2 = coeff[8]
-    THETA = coeff[9]
-    OMEGA1 = coeff[10]
-    OMEGA2 = coeff[11]
+    OMEGA1 = coeff[9]
+    OMEGA2 = coeff[10]
 
     S = X[0]
     E = X[1]
@@ -95,8 +95,8 @@ def propp(X, coeff):
     return w
 
 
-X0 = (S0, E0, I0, D0, R0, V1_0, V2_0, IM0)
-coeff = (B, ALFA, MU, GAMMA, VAC1, VAC2, VAC2_R, SIGMA1, SIGMA2, THETA, OMEGA1, OMEGA2) 
+X0 = (S0, E0, I0, D0, R0, V1_0, V2_0, IM0, C0)
+coeff = (B, ALFA, MU, GAMMA, VAC1, VAC2, VAC2_R, SIGMA1, SIGMA2, OMEGA1, OMEGA2) 
 t, X = SSA(propp, stoch, X0, tspan, coeff) 
 
 plt.plot(t, X[:,0], label="S")
@@ -107,6 +107,7 @@ plt.plot(t, X[:,4], label="R")
 plt.plot(t, X[:,5], label="V1")
 plt.plot(t, X[:,6], label="V2")
 plt.plot(t, X[:,7], label="IM")
+plt.plot(t, X[:,8], label="C")
 plt.legend()
 plt.grid()
 plt.show()
